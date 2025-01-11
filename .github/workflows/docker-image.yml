@@ -21,8 +21,12 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Set up Docker tag
+      id: docker_tag
+      run: echo "tag=$(date +%s)" >> $GITHUB_ENV
+
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ghcr.io/${{ github.repository_owner }}/miniflux-ai:$(date +%s)
+      run: docker build . --file Dockerfile --tag ghcr.io/${{ github.repository_owner }}/miniflux-ai:${{ env.tag }}
 
     - name: Push the Docker image
-      run: docker push ghcr.io/${{ github.repository_owner }}/miniflux-ai:$(date +%s)
+      run: docker push ghcr.io/${{ github.repository_owner }}/miniflux-ai:${{ env.tag }}
